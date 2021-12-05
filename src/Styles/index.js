@@ -20,10 +20,3 @@ export const Topbar = styled.div`
   padding: 20px;
   border-radius: 5px;
 `;
-
-export const RepoList = styled.ul`
-  grid-area: repos;
-  list-style: none;
-  margin: 10px 0 0 0;
-  padding-inline-start: 5px;
-`;

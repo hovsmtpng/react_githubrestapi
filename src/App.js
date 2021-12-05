@@ -3,10 +3,12 @@ import './App.css';
 
 import React, { useState, useRef } from "react";
 
-import { Container, Topbar, RepoList } from "./Styles/";
+import { Container, Topbar } from "./Styles/";
+import Box from '@mui/material/Box';
 
 import SearchBar from "./Components/SearchBar/";
-
+import GUserProfile from "./Components/GithubUserProfile/UserProfile";
+import RepositoryCard from "./Components/Repository/Repository"
 
 
 function App() {
@@ -65,18 +67,31 @@ function App() {
     
     <Container>
       <Topbar>
-        <h1>GitHub Search Repository</h1>
+        <h1>Github Search</h1>
         <SearchBar
           onKeyPress={handleEnterKey}
           onFocus={selectText}
           searchFunction={search}
           loadingState={loading}
           inputRef={inputEl}
-        />
+          />
       </Topbar>
+      {!isFound ? <h1> User Tidak Ditemukan </h1> : null}
 
-      {!isFound ? <h1> Not Found </h1> : null}
-
+      {user.profile.id && (
+        <>
+          <>
+          <GUserProfile data={user.profile} ></GUserProfile>
+          </>
+          <div style={{ width: '100%' }}>
+          <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            {user.repos.map((data) => (
+                <RepositoryCard repo={data}></RepositoryCard>
+            ))}
+            </Box>
+          </div>
+        </>
+      )}
     </Container>
   
   );
