@@ -1,30 +1,17 @@
 import React from "react";
-import "./UserProfile.css";
+import Button from '@mui/material/Button';
+import { CardContent, CH2, CH6, CH3, CardInfo, Avatar } from "./UserProfileStyles.js";
 
-export default function UserProfile({ data }) {
+export default function UserProfile({ data, OpenRepoFunction }) {
 	return (
-		<div className="card-container">
-			<header>
-				<img src={data.avatar_url} alt={data.login} />
-			</header>
-			<h1 className="bold-text">
-				{data.name}
-			</h1>
-			<h2 className="normal-text"></h2>
-			<div className="social-container">
-				<div className="likes">
-					<h1 className="bold-text">{data.public_repos}</h1>
-					<h2 className="smaller-text">Repositories</h2>
-				</div>
-				<div className="followers">
-					<h1 className="bold-text">{data.followers}</h1>
-					<h2 className="smaller-text">Followers</h2>
-				</div>
-				<div className="photos">
-					<h1 className="bold-text">{data.following}</h1>
-					<h2 className="smaller-text">Following</h2>
-				</div>
-			</div>
-		</div>
+        <CardContent>
+          <CardInfo>
+			      {data.avatar_url && <Avatar src={data.avatar_url} alt={data.login} />}
+            <CH2>{data.name}</CH2>
+            <CH3>{data.location}</CH3>
+            <CH6>{data.followers} followers | {data.following} following</CH6>
+            <Button onClick={() => OpenRepoFunction()} size="small">{data.public_repos} Repository</Button>
+          </CardInfo>
+        </CardContent>
 	);
 }

@@ -14,8 +14,13 @@ import RepositoryCard from "./Components/Repository/Repository"
 function App() {
   const [user, setUser] = useState({
     profile: {},
-    repos: [],
   });
+
+    const [repository, setRepository] = useState({
+      reposList:[]
+    });
+  // const [isFoundRepo, setIsFoundRepo] = useState(true);
+
   const [loading, setLoading] = useState(false);
   const [isFound, setIsFound] = useState(true);
 
@@ -34,33 +39,52 @@ function App() {
   };
 
   async function getApiData() {
-    const [profile, repos] = await Promise.all([
+    const [profile] = await Promise.all([
       fetch(`https://api.github.com/users/${inputEl.current.value}`).then(
         (response) => response.json()
       ),
-      fetch(`https://api.github.com/users/${inputEl.current.value}/repos`).then(
-        (response) => response.json()
-      ),
     ]);
-
-    return { profile, repos };
-  }
+    return { profile };
+  } 
 
   async function search() {
     setLoading(true);
-    const { profile, repos } = await getApiData();
+    const { profile } = await getApiData();
     setLoading(false);
 
     if (profile.message === "Not Found") {
       // inputEl.current.focus();
       setIsFound(false);
+      setUser({
+        profile: {},
+      });
     } else {
       setIsFound(true);
       setUser({
         profile,
-        repos,
       });
     }
+  }
+
+  async function getApiDataRepos() {
+    const [reposList] = await Promise.all([
+      fetch(`https://api.github.com/users/${user.profile.login}/repos`).then(
+        (response) => response.json()
+      ),
+    ]);
+    
+    return { reposList };
+  }
+
+  async function OpenListRepo() {
+    // setLoading(true);
+    const { reposList } = await getApiDataRepos();
+    // setLoading(false);
+
+    setRepository({
+      reposList,
+    });
+
   }
   
   return (
@@ -81,11 +105,14 @@ function App() {
       {user.profile.id && (
         <>
           <>
-          <GUserProfile data={user.profile} ></GUserProfile>
+          <GUserProfile 
+            data={user.profile}
+            OpenRepoFunction={OpenListRepo}
+          ></GUserProfile>
           </>
           <div style={{ width: '100%' }}>
-          <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: 'repeat(3, 1fr)' }}>
-            {user.repos.map((data) => (
+          <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: 'repeat(2, 1fr)' }}>
+            {repository.reposList.map((data) => (
                 <RepositoryCard repo={data}></RepositoryCard>
             ))}
             </Box>
