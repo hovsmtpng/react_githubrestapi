@@ -50,18 +50,17 @@ async function search() {
     method: "get",
     url: `https://api.github.com/users/${inputEl.current.value}`,
   }).then((res) => {
-    setLoading(false);
+  setLoading(false);
+  setUser(res.data);
+  
+})
+.catch(err => {
+  console.log(err);
+  setIsFound(false);
+  setLoading(false);
+  setUser("");
+  setRepository([]);
 
-  if (user.message === "Not Found") {
-    console.log(user.message);
-    // inputEl.current.focus();
-    setIsFound(false);
-    // setUser({});
-    // setRepository([]);
-  } else {
-    setIsFound(true);
-    setUser(res.data);
-  }
 });
 }
 
