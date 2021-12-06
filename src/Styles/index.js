@@ -10,7 +10,6 @@ export const Container = styled.div`
 `;
 
 export const Topbar = styled.div`
-  width: 500px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

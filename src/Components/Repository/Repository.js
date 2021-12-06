@@ -15,12 +15,11 @@ export default function Repository({repo}) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography variant="body2" color="text.secondary">
+        <FaCode className="icons" /> <NoLineBreak>{repo.language}</NoLineBreak>
+        <Typography gutterBottom variant="h7" component="div">
         {repo.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-        <FaCode className="icons" />
-        <NoLineBreak>{repo.language}</NoLineBreak>
         </Typography>
         <Typography variant="body2" color="text.secondary">
         {repo.description}

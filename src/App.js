@@ -3,12 +3,14 @@ import './App.css';
 
 import React, { useState, useRef } from "react";
 
-import { Container, Topbar } from "./Styles/";
+import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 
 import SearchBar from "./Components/SearchBar/";
 import GUserProfile from "./Components/GithubUserProfile/UserProfile";
 import RepositoryCard from "./Components/Repository/Repository"
+import { Topbar } from "./Styles/";
 
 
 function App() {
@@ -58,6 +60,9 @@ function App() {
       setUser({
         profile: {},
       });
+      setRepository({
+        reposList: [],
+      });
     } else {
       setIsFound(true);
       setUser({
@@ -80,18 +85,15 @@ function App() {
     // setLoading(true);
     const { reposList } = await getApiDataRepos();
     // setLoading(false);
-
     setRepository({
       reposList,
     });
-
   }
   
   return (
-    
-    <Container>
+    <Container maxWidth="md">
       <Topbar>
-        <h1>Github Search</h1>
+        <h1>GitSearchRepo</h1>
         <SearchBar
           onKeyPress={handleEnterKey}
           onFocus={selectText}
@@ -100,25 +102,23 @@ function App() {
           inputRef={inputEl}
           />
       </Topbar>
-      {!isFound ? <h1> User Tidak Ditemukan </h1> : null}
+      {!isFound ? <h3> <center>User Tidak Ditemukan</center> </h3> : null}
 
       {user.profile.id && (
-        <>
-          <>
-          <GUserProfile 
+            <GUserProfile 
             data={user.profile}
             OpenRepoFunction={OpenListRepo}
-          ></GUserProfile>
-          </>
-          <div style={{ width: '100%' }}>
-          <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: 'repeat(2, 1fr)' }}>
-            {repository.reposList.map((data) => (
-                <RepositoryCard repo={data}></RepositoryCard>
-            ))}
-            </Box>
-          </div>
-        </>
-      )}
+            />
+            )}
+   <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+          {repository.reposList.map((data) => (
+            <Grid item xs={2} sm={4} md={4} key={data}>
+            <RepositoryCard repo={data}></RepositoryCard>
+          </Grid>
+          ))}
+      </Grid>
+    </Box>
     </Container>
   
   );

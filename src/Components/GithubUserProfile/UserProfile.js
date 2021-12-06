@@ -10,7 +10,7 @@ export default function UserProfile({ data, OpenRepoFunction }) {
             <CH2>{data.name}</CH2>
             <CH3>{data.location}</CH3>
             <CH6>{data.followers} followers | {data.following} following</CH6>
-            <Button onClick={() => OpenRepoFunction()} size="small">{data.public_repos} Repository</Button>
+            <Button variant="outlined" color="secondary" onClick={() => OpenRepoFunction()} size="small">{data.public_repos} Repository</Button>
           </CardInfo>
         </CardContent>
 	);

@@ -1,6 +1,7 @@
 import React from "react";
 
-import { Container, UsernameInput, SearchButton } from "./style";
+import Button from '@mui/material/Button';
+import { Container, UsernameInput } from "./style";
 import { FaSpinner } from "react-icons/fa";
 
 export default function SearchBar(props) {
@@ -9,17 +10,17 @@ export default function SearchBar(props) {
       <UsernameInput
         placeholder="GitHub Username"
         type="text"
-        spellCheck="false"
+        // spellCheck="false"
         onKeyPress={props.onKeyPress}
         onFocus={props.onFocus}
         ref={props.inputRef}
       />
-      <SearchButton
+      <Button  variant="contained" color="error"
         onClick={() => props.searchFunction()}
         loadingState={props.loadingState ? "loading" : undefined}
-      >
-        {props.loadingState ? <FaSpinner /> : "Search"}
-      </SearchButton>
+        style={{height: '40px'}}>
+        {props.loadingState ? <FaSpinner style={{fontSize : '20px'}}/> : "Cari"}
+      </Button>
     </Container>
   );
 }
