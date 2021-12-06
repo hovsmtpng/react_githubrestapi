@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
-import './App.css';
+// import './App.css';
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import axios from 'axios';
 
 import Container from '@mui/material/Container';
@@ -35,23 +35,17 @@ const selectText = () => {
   inputEl.current.select();
 };
 
-async function getApiData() {
-  const [profile] = await Promise.all([
-    fetch(`https://api.github.com/users/${inputEl.current.value}`).then(
-      (response) => response.json()
-    ),
-  ]);
-  return { profile };
-} 
-
 async function search() {
+  setUser("");
+  setRepository([]);
   setLoading(true);
   axios({
     method: "get",
     url: `https://api.github.com/users/${inputEl.current.value}`,
   }).then((res) => {
-  setLoading(false);
-  setUser(res.data);
+    setIsFound(true);
+    setUser(res.data);
+    setLoading(false);
   
 })
 .catch(err => {
@@ -64,31 +58,23 @@ async function search() {
 });
 }
 
-async function getApiDataRepos() {
-  const [reposList] = await Promise.all([
-    fetch(`https://api.github.com/users/${user.profile.login}/repos`).then(
-      (response) => response.json()
-    ),
-  ]);
-  
-  return { reposList };
-}
-
 async function OpenListRepo() {
-  setLoading(true);
   axios({ 
     method: "get",
     url: `https://api.github.com/users/${user.login}/repos`,
   }).then((res) => {
-    setLoading(false);
     setRepository(res.data);
   });
 }
 
 return (
-  <Container maxWidth="md">
+  
+
+<Container maxWidth="md">
     <Topbar>
-      <h1>GitSearchRepo</h1>
+      <h1 style={{margin: '0', marginBottom:'20px'}}>GitSearchRepo Assessment Test</h1>
+      <h4 style={{margin: '0', marginBottom:'5px'}}>Frontend Developer Candidate - PT Telekomunikasi Indonesia</h4>
+      <h4 style={{margin: '0', marginBottom:'30px'}}>Hovely Simatupang | 082216601511 | hovelywzsimatupang@gmail.com</h4>
       <SearchBar
         onKeyPress={handleEnterKey}
         onFocus={selectText}
@@ -100,22 +86,24 @@ return (
     {!isFound ? <h3> <center>User Tidak Ditemukan</center> </h3> : null}
 
     {user.id && (
+          <>
           <GUserProfile 
           data={user}
           OpenRepoFunction={OpenListRepo}
           />
+          <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              {repository.map((data) => (
+                <Grid item xs={2} sm={4} md={4} key={data}>
+                <RepositoryCard repo={data}></RepositoryCard>
+              </Grid>
+              ))}
+          </Grid>
+        </Box>
+          </>
           )}
- <Box sx={{ flexGrow: 1 }}>
-    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {repository.map((data) => (
-          <Grid item xs={2} sm={4} md={4} key={data}>
-          <RepositoryCard repo={data}></RepositoryCard>
-        </Grid>
-        ))}
-    </Grid>
-  </Box>
-  </Container>
 
+  </Container>
 );
 }
 
